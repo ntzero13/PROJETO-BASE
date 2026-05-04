@@ -14,7 +14,7 @@ return new class extends Migration
             $table->foreignId('inspection_room_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('inspection_item_id')->nullable()->constrained()->nullOnDelete();
             $table->string('type')->default('foto');
-            $table->string('disk')->default('public');
+            $table->string('disk')->default('local');
             $table->string('path');
             $table->string('caption')->nullable();
             $table->timestamps();
