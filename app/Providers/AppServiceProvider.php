@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\InitializeTenancyForLivewire;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,5 +24,16 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         CarbonImmutable::setLocale(config('app.locale'));
+
+        app(\Illuminate\Contracts\Http\Kernel::class)
+            ->prependToMiddlewarePriority(InitializeTenancyForLivewire::class);
+
+        Livewire::setUpdateRoute(function ($handle, string $path) {
+            return Route::post($path, $handle)
+                ->middleware([
+                    'web',
+                    InitializeTenancyForLivewire::class,
+                ]);
+        });
     }
 }
