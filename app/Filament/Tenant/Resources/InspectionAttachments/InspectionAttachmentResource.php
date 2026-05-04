@@ -24,6 +24,14 @@ class InspectionAttachmentResource extends Resource
 {
     protected static ?string $model = InspectionAttachment::class;
 
+    protected static ?string $modelLabel = 'anexo';
+
+    protected static ?string $pluralModelLabel = 'anexos';
+
+    protected static ?string $navigationLabel = 'Anexos';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Vistorias';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function form(Schema $schema): Schema
@@ -41,7 +49,7 @@ class InspectionAttachmentResource extends Resource
                     ->options([
                         'foto' => 'Foto',
                         'documento' => 'Documento',
-                        'relatorio' => 'Relatorio',
+                        'relatorio' => 'Relatório',
                     ])
                     ->default('foto')
                     ->required(),
@@ -89,7 +97,7 @@ class InspectionAttachmentResource extends Resource
                     ->label('Legenda')
                     ->searchable(),
                 TextColumn::make('disk')
-                    ->label('Storage')
+                    ->label('Armazenamento')
                     ->badge()
                     ->sortable(),
                 TextColumn::make('created_at')
@@ -103,17 +111,17 @@ class InspectionAttachmentResource extends Resource
                     ->options([
                         'foto' => 'Foto',
                         'documento' => 'Documento',
-                        'relatorio' => 'Relatorio',
+                        'relatorio' => 'Relatório',
                     ]),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
+                ViewAction::make()->label('Ver'),
+                EditAction::make()->label('Editar'),
+                DeleteAction::make()->label('Excluir'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()->label('Excluir selecionados'),
                 ]),
             ]);
     }

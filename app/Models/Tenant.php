@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CompanyStatus;
+use App\Models\Central\Plan;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -63,6 +64,6 @@ class Tenant extends BaseTenant implements TenantWithDatabase
 
     public function plan(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Central\Plan::class);
+        return $this->belongsTo(Plan::class);
     }
 }

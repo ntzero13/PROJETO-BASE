@@ -5,9 +5,7 @@ namespace App\Filament\Tenant\Resources\Inspections;
 use App\Filament\Tenant\Resources\Inspections\Pages\ManageInspections;
 use App\Models\Tenant\Inspection;
 use BackedEnum;
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DateTimePicker;
@@ -26,6 +24,14 @@ class InspectionResource extends Resource
 {
     protected static ?string $model = Inspection::class;
 
+    protected static ?string $modelLabel = 'vistoria';
+
+    protected static ?string $pluralModelLabel = 'vistorias';
+
+    protected static ?string $navigationLabel = 'Vistorias';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Vistorias';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function form(Schema $schema): Schema
@@ -35,7 +41,7 @@ class InspectionResource extends Resource
                 Hidden::make('created_by')
                     ->default(fn (): ?int => auth('tenant')->id()),
                 TextInput::make('title')
-                    ->label('Titulo')
+                    ->label('Título')
                     ->required()
                     ->maxLength(255),
                 Select::make('client_id')
@@ -64,7 +70,7 @@ class InspectionResource extends Resource
                     ->label('Resumo')
                     ->rows(3),
                 Textarea::make('observations')
-                    ->label('Observacoes')
+                    ->label('Observações')
                     ->rows(4),
             ]);
     }
@@ -124,10 +130,12 @@ class InspectionResource extends Resource
                     ]),
             ])
             ->recordActions([
-                ViewAction::make(),
+                ViewAction::make()->label('Ver'),
                 EditAction::make()
+                    ->label('Editar')
                     ->hidden(fn (Inspection $record): bool => $record->status === 'finalizada'),
                 DeleteAction::make()
+                    ->label('Excluir')
                     ->hidden(fn (Inspection $record): bool => $record->status === 'finalizada'),
             ])
             ->toolbarActions([]);

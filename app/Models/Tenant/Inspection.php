@@ -32,7 +32,7 @@ class Inspection extends Model
         static::updating(function (Inspection $inspection): void {
             if ($inspection->getOriginal('status') === 'finalizada') {
                 throw ValidationException::withMessages([
-                    'status' => 'Vistorias finalizadas nao podem ser alteradas.',
+                    'status' => 'Vistorias finalizadas não podem ser alteradas.',
                 ]);
             }
         });
@@ -40,7 +40,7 @@ class Inspection extends Model
         static::deleting(function (Inspection $inspection): void {
             if ($inspection->getOriginal('status') === 'finalizada') {
                 throw ValidationException::withMessages([
-                    'status' => 'Vistorias finalizadas nao podem ser excluidas.',
+                    'status' => 'Vistorias finalizadas não podem ser excluídas.',
                 ]);
             }
         });

@@ -24,6 +24,14 @@ class PlanResource extends Resource
 {
     protected static ?string $model = Plan::class;
 
+    protected static ?string $modelLabel = 'plano';
+
+    protected static ?string $pluralModelLabel = 'planos';
+
+    protected static ?string $navigationLabel = 'Planos';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Administração';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function form(Schema $schema): Schema
@@ -40,10 +48,10 @@ class PlanResource extends Resource
                     ->maxLength(255)
                     ->unique(ignoreRecord: true),
                 Textarea::make('description')
-                    ->label('Descricao')
+                    ->label('Descrição')
                     ->rows(3),
                 TextInput::make('price_cents')
-                    ->label('Preco em centavos')
+                    ->label('Preço em centavos')
                     ->numeric()
                     ->minValue(0)
                     ->required(),
@@ -74,13 +82,13 @@ class PlanResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('price_cents')
-                    ->label('Preco')
+                    ->label('Preço')
                     ->money('BRL', divideBy: 100)
                     ->sortable(),
                 TextColumn::make('is_active')
                     ->label('Ativo')
                     ->badge()
-                    ->formatStateUsing(fn (bool $state): string => $state ? 'Sim' : 'Nao')
+                    ->formatStateUsing(fn (bool $state): string => $state ? 'Sim' : 'Não')
                     ->color(fn (bool $state): string => $state ? 'success' : 'gray'),
                 TextColumn::make('created_at')
                     ->label('Criado em')
@@ -93,13 +101,13 @@ class PlanResource extends Resource
                     ->label('Ativo'),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
+                ViewAction::make()->label('Ver'),
+                EditAction::make()->label('Editar'),
+                DeleteAction::make()->label('Excluir'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()->label('Excluir selecionados'),
                 ]),
             ]);
     }

@@ -18,6 +18,5 @@ readonly class ProvisionTenantData
         public string $initialAdminEmail,
         public string $initialAdminPassword,
         public CompanyStatus $status = CompanyStatus::Trial,
-    ) {
-    }
+    ) {}
 }

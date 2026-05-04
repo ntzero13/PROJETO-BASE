@@ -22,6 +22,14 @@ class CompanySettingResource extends Resource
 {
     protected static ?string $model = CompanySetting::class;
 
+    protected static ?string $modelLabel = 'configuração da empresa';
+
+    protected static ?string $pluralModelLabel = 'configurações da empresa';
+
+    protected static ?string $navigationLabel = 'Configurações';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Administração';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function form(Schema $schema): Schema
@@ -29,7 +37,7 @@ class CompanySettingResource extends Resource
         return $schema
             ->components([
                 TextInput::make('company_name')
-                    ->label('Razao social')
+                    ->label('Razão social')
                     ->required()
                     ->maxLength(255),
                 TextInput::make('trade_name')
@@ -43,7 +51,7 @@ class CompanySettingResource extends Resource
                     ->label('Telefone')
                     ->maxLength(30),
                 KeyValue::make('report_preferences')
-                    ->label('Preferencias de relatorio'),
+                    ->label('Preferências do relatório'),
             ]);
     }
 
@@ -60,7 +68,7 @@ class CompanySettingResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('company_name')
-                    ->label('Razao social')
+                    ->label('Razão social')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('trade_name')
@@ -76,13 +84,13 @@ class CompanySettingResource extends Resource
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
+                ViewAction::make()->label('Ver'),
+                EditAction::make()->label('Editar'),
+                DeleteAction::make()->label('Excluir'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()->label('Excluir selecionados'),
                 ]),
             ]);
     }

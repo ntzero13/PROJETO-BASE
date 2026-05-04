@@ -22,6 +22,14 @@ class ClientResource extends Resource
 {
     protected static ?string $model = Client::class;
 
+    protected static ?string $modelLabel = 'cliente';
+
+    protected static ?string $pluralModelLabel = 'clientes';
+
+    protected static ?string $navigationLabel = 'Clientes';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Cadastros';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function form(Schema $schema): Schema
@@ -43,7 +51,7 @@ class ClientResource extends Resource
                     ->label('Telefone')
                     ->maxLength(30),
                 Textarea::make('notes')
-                    ->label('Observacoes')
+                    ->label('Observações')
                     ->rows(3),
             ]);
     }
@@ -84,13 +92,13 @@ class ClientResource extends Resource
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
+                ViewAction::make()->label('Ver'),
+                EditAction::make()->label('Editar'),
+                DeleteAction::make()->label('Excluir'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()->label('Excluir selecionados'),
                 ]),
             ]);
     }

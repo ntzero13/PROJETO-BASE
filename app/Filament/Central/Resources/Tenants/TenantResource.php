@@ -2,13 +2,10 @@
 
 namespace App\Filament\Central\Resources\Tenants;
 
-use App\Filament\Central\Resources\Tenants\Pages\ManageTenants;
 use App\Enums\CompanyStatus;
+use App\Filament\Central\Resources\Tenants\Pages\ManageTenants;
 use App\Models\Tenant;
 use BackedEnum;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DateTimePicker;
@@ -25,6 +22,14 @@ use Filament\Tables\Table;
 class TenantResource extends Resource
 {
     protected static ?string $model = Tenant::class;
+
+    protected static ?string $modelLabel = 'empresa';
+
+    protected static ?string $pluralModelLabel = 'empresas';
+
+    protected static ?string $navigationLabel = 'Empresas';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Administração';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
@@ -49,7 +54,7 @@ class TenantResource extends Resource
                     ->label('Documento')
                     ->maxLength(32),
                 TextInput::make('contact_name')
-                    ->label('Responsavel')
+                    ->label('Responsável')
                     ->required()
                     ->maxLength(255),
                 TextInput::make('contact_email')
@@ -62,9 +67,7 @@ class TenantResource extends Resource
                     ->maxLength(30),
                 Select::make('status')
                     ->label('Status')
-                    ->options(collect(CompanyStatus::cases())->mapWithKeys(
-                        fn (CompanyStatus $status): array => [$status->value => $status->name],
-                    )->all())
+                    ->options(CompanyStatus::opcoes())
                     ->required(),
                 Select::make('plan_id')
                     ->label('Plano')
@@ -78,7 +81,7 @@ class TenantResource extends Resource
                     ->disabled()
                     ->dehydrated(false),
                 KeyValue::make('settings')
-                    ->label('Configuracoes')
+                    ->label('Configurações')
                     ->disabled()
                     ->dehydrated(false)
                     ->columnSpanFull(),
@@ -114,6 +117,11 @@ class TenantResource extends Resource
                 TextColumn::make('status')
                     ->label('Status')
                     ->badge()
+                    ->formatStateUsing(
+                        fn (CompanyStatus|string $state): string => $state instanceof CompanyStatus
+                            ? $state->rotulo()
+                            : (CompanyStatus::tryFrom($state)?->rotulo() ?? $state),
+                    )
                     ->sortable(),
                 TextColumn::make('trial_ends_at')
                     ->label('Fim do teste')
@@ -128,16 +136,14 @@ class TenantResource extends Resource
             ->filters([
                 SelectFilter::make('status')
                     ->label('Status')
-                    ->options(collect(CompanyStatus::cases())->mapWithKeys(
-                        fn (CompanyStatus $status): array => [$status->value => $status->name],
-                    )->all()),
+                    ->options(CompanyStatus::opcoes()),
                 SelectFilter::make('plan_id')
                     ->label('Plano')
                     ->relationship('plan', 'name'),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()->label('Ver'),
+                EditAction::make()->label('Editar'),
             ])
             ->toolbarActions([]);
     }

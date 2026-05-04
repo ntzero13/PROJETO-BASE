@@ -30,7 +30,7 @@ class CentralPanelProvider extends PanelProvider
             ->passwordReset()
             ->authGuard('central')
             ->authPasswordBroker('central_users')
-            ->brandName('Base SaaS')
+            ->brandName('Sistema de Vistorias')
             ->colors([
                 'primary' => Color::Amber,
             ])

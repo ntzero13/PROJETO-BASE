@@ -24,6 +24,14 @@ class InspectedLocationResource extends Resource
 {
     protected static ?string $model = InspectedLocation::class;
 
+    protected static ?string $modelLabel = 'local vistoriado';
+
+    protected static ?string $pluralModelLabel = 'locais vistoriados';
+
+    protected static ?string $navigationLabel = 'Locais vistoriados';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Vistorias';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function form(Schema $schema): Schema
@@ -42,15 +50,15 @@ class InspectedLocationResource extends Resource
                 Select::make('type')
                     ->label('Tipo')
                     ->options([
-                        'imovel' => 'Imovel',
-                        'veiculo' => 'Veiculo',
+                        'imovel' => 'Imóvel',
+                        'veiculo' => 'Veículo',
                         'equipamento' => 'Equipamento',
                         'outro' => 'Outro',
                     ])
                     ->required()
                     ->default('imovel'),
                 TextInput::make('address')
-                    ->label('Endereco')
+                    ->label('Endereço')
                     ->maxLength(255),
                 TextInput::make('city')
                     ->label('Cidade')
@@ -62,7 +70,7 @@ class InspectedLocationResource extends Resource
                     ->label('CEP')
                     ->maxLength(12),
                 Textarea::make('notes')
-                    ->label('Observacoes')
+                    ->label('Observações')
                     ->rows(3),
             ]);
     }
@@ -103,20 +111,20 @@ class InspectedLocationResource extends Resource
                 SelectFilter::make('type')
                     ->label('Tipo')
                     ->options([
-                        'imovel' => 'Imovel',
-                        'veiculo' => 'Veiculo',
+                        'imovel' => 'Imóvel',
+                        'veiculo' => 'Veículo',
                         'equipamento' => 'Equipamento',
                         'outro' => 'Outro',
                     ]),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
+                ViewAction::make()->label('Ver'),
+                EditAction::make()->label('Editar'),
+                DeleteAction::make()->label('Excluir'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()->label('Excluir selecionados'),
                 ]),
             ]);
     }
